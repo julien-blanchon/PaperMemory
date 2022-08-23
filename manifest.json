@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/chrome-manifest", 
   "name": "Paper Memory",
   "version": "0.5.8",
   "manifest_version": 2,
