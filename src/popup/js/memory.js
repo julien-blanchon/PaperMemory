@@ -284,9 +284,21 @@ const focusExistingOrCreateNewPaperTab = (paper, fromMemoryItem) => {
                 chrome.downloads.open(global.state.files[paper.id].id);
             } else {
                 // no tab open or local file: open a new tab to the paper's pdf
-                chrome.tabs.create({
-                    url: prefs.checkPreferPdf ? paperToPDF(paper) : paperToAbs(paper),
-                });
+                chrome.tabs.query(
+                    { active: true, currentWindow: true },
+                    function (tabs) {
+                        var currTab = tabs[0];
+                        chrome.tabs.create({
+                            url: prefs.checkPreferPdf
+                                ? paperToPDF(paper)
+                                : paperToAbs(paper),
+                            windowId: chrome.windows.WINDOW_ID_CURRENT,
+                            selected: true,
+                            index: currTab.index + 1,
+                            openerTabId: currTab.id,
+                        });
+                    }
+                );
             }
         }
 
